@@ -1,3 +1,6 @@
+// import DataItemBean from './DataItemBean';
+import { DataItemBean } from './DataItemBean';
+
 export class DataModel {
   private studentList: Array<string> = [
     "丁程鑫",
@@ -11,6 +14,40 @@ export class DataModel {
 
   getStudentList(): Array<string> {
     return this.studentList;
+  }
+
+  getStudentList2(): Array<DataItemBean> {
+    let studentList: DataItemBean[] = [
+      {
+        "title": "丁程鑫",
+        "image": "https://c-ssl.duitang.com/uploads/item/201805/06/20180506084619_2svWA.jpeg",
+      },
+      {
+        "title": "贺峻霖",
+        "image": "https://c-ssl.duitang.com/uploads/blog/202107/05/20210705215458_36c2b.jpg",
+      },
+      {
+        "title": "肖战",
+        "image": "https://c-ssl.duitang.com/uploads/blog/202112/17/20211217211133_85430.jpeg",
+      },
+      {
+        "title": "成毅",
+        "image": "https://tse1-mm.cn.bing.net/th/id/OIP-C.2z8V15bPD1jmtWkBM47b_AHaHa?pid=ImgDet&rs=1",
+      },
+      {
+        "title": "刘耀文",
+        "image": "https://c-ssl.duitang.com/uploads/avatar/202202/07/20220207015125_23365.jpg",
+      },
+      {
+        "title": "李天泽",
+        "image": "https://img9.doubanio.com/icon/up243132021-15.jpg",
+      },
+      {
+        "title": "马嘉祺",
+        "image": "https://tse1-mm.cn.bing.net/th/id/OIP-C.vzhdsIrhKA_hJ3mqJMKcVQHaIC?pid=ImgDet&rs=1",
+      },
+    ];
+    return studentList;
   }
 }
 

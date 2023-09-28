@@ -1,11 +1,20 @@
 import router from '@ohos.router';
 import CommonConstants from '../common/constants/CommonConstants';
-import { Logger } from '../common/utils/Logger';
+import { DataItemBean } from '../viewmodel/DataItemBean';
+// import DataItemBean from '../viewmodel/DataItemBean';
 
 @Component
 export default struct StudentListItem {
   @State isChecked: boolean = false;
-  private name?: string;
+  // private name?: string;
+  // private imageUrl?: string;
+
+  private studentData?: DataItemBean;
+
+  aboutToAppear() {
+    console.log("DataItemBean", this.studentData.title)
+    console.log("DataItemBean", this.studentData.image)
+  }
 
   @Builder checkIcon(icon: Resource) {
     Image(icon)
@@ -23,7 +32,8 @@ export default struct StudentListItem {
         this.checkIcon($r('app.media.ic_unchecked'))
       }
 
-      Text(this.name)
+      // Text(this.name)
+      Text(this.studentData.title)
         .fontColor(this.isChecked ? Color.Red : Color.Black)
         .fontSize(this.isChecked ? $r('app.float.item_checked_font_size') : $r('app.float.item_font_size'))
         .fontWeight(500)
@@ -37,13 +47,16 @@ export default struct StudentListItem {
         .height('30vp')
         .margin('30vp')
         .onClick(() => {
-          console.log('Next Click' + this.name);
+          // console.log('Next Click' + this.name);
+          console.log('Next Click' + this.studentData.title);
+          console.log('Next Click' + this.studentData.image);
 
           router.pushUrl({
             // url: 'pages/StudentDetailPage',
             url: CommonConstants.STUDENT_DETAIL_URL,
             params: {
-              name: this.name,
+              // name: this.name,
+              studentData: this.studentData
             }
           }).catch((error) => {
             console.log('Next Click', 'IndexPage push error' + JSON.stringify(error));
