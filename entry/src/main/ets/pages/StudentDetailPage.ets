@@ -188,7 +188,7 @@ struct StudentDetailPage {
         .fontFamily('Arial')
         .caretColor(Color.Blue)
         .onChange((value: string) => {
-          this.backMessage = value + "最帅！"
+          this.backMessage = this.studentData.title + "  " + value + "最帅！"
         })
 
       // 可以通过调用router.back()方法实现返回到上一个页面，

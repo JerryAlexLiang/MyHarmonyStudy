@@ -39,6 +39,14 @@
     {
       "name": "list_item_height",
       "value": "64vp"
+    },
+    {
+      "name": "grid_item_width",
+      "value": "120vp"
+    },
+    {
+      "name": "grid_item_height",
+      "value": "120vp"
     }
   ]
 }
