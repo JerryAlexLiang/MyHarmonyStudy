@@ -87,4 +87,24 @@ export default class CommonConstants {
    * The param opacity.
    */
   static readonly PARAMS_OPACITY: number = 0.6;
+
+  /**
+   * StudentList tab index
+   */
+  static readonly STUDENT_LIST_TAB_INDEX = 0;
+
+  /**
+   * Student picture tab index
+   */
+  static readonly PICTURE_TAB_INDEX = 1;
+
+  /**
+   * Title text of the home page
+   */
+  static readonly STUDENT_LIST_TITLE = '首页';
+
+  /**
+   * Title text of the setting page
+   */
+  static readonly PICTURE_TITLE = '靓照';
 }

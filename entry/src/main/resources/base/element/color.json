@@ -11,6 +11,18 @@
     {
       "name": "page_background2",
       "value": "#FF00FF"
+    },
+    {
+      "name": "mainPage_selected_color",
+      "value": "#1698CE"
+    },
+    {
+      "name": "mainPage_normal_color",
+      "value": "#6B6B6B"
+    },
+    {
+      "name": "mainPage_backgroundColor",
+      "value": "#F1F3F5"
     }
   ]
 }

@@ -47,6 +47,54 @@
     {
       "name": "grid_item_height",
       "value": "120vp"
+    },
+    {
+      "name": "mainPage_baseTab_size",
+      "value": "25vp"
+    },
+    {
+      "name": "mainPage_baseTab_top",
+      "value": "4vp"
+    },
+    {
+      "name": "mainPage_baseTab_margin",
+      "value": "8vp"
+    },
+    {
+      "name": "mainPage_padding",
+      "value": "12vp"
+    },
+    {
+      "name": "mainPage_barWidth",
+      "value": "56vp"
+    },
+    {
+      "name": "mainPage_barHeight",
+      "value": "56vp"
+    },
+    {
+      "name": "main_tab_normal_fontSize",
+      "value": "10fp"
+    },
+    {
+      "name": "main_tab_selected_fontSize",
+      "value": "14fp"
+    },
+    {
+      "name": "mainPage_tabTitles_margin",
+      "value": "12vp"
+    },
+    {
+      "name": "mainPage_tabTitles_padding",
+      "value": "12vp"
+    },
+    {
+      "name": "home_swiper_borderRadius",
+      "value": "16vp"
+    },
+    {
+      "name": "home_swiper_margin",
+      "value": "24vp"
     }
   ]
 }

@@ -209,7 +209,8 @@ struct StudentDetailPage {
 
           // 调用router.back()方法返回上一个页面或者返回指定页面时，根据需要继续增加自定义参数，例如在返回时增加一个自定义参数src
           router.back({
-            url: 'pages/StudentListPage',
+            // url: 'pages/StudentListPage',
+            url: 'pages/MainPage',
             params: {
               backMessage: this.backMessage,
             }

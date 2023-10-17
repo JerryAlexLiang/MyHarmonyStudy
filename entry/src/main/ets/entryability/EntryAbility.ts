@@ -22,7 +22,8 @@ export default class EntryAbility extends UIAbility {
 
     // 使用 windowStage.loadContent设置要加载的页面，并根据需要订阅WindowState的事件
     // windowStage.loadContent('pages/Index', (err, data) => {
-    windowStage.loadContent('pages/StudentListPage', (err, data) => {
+    // windowStage.loadContent('pages/StudentListPage', (err, data) => {
+    windowStage.loadContent('pages/MainPage', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;
