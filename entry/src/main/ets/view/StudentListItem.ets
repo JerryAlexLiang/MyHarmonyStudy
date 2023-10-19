@@ -153,8 +153,15 @@ export default struct StudentListItem {
       .backgroundColor($r('app.color.start_window_background'))
       .width('100%')
       .height(this.isChecked ? $r('app.float.list_item_expand_height') : $r('app.float.list_item_height'))
+      .animation({ duration: 300 })
       .onClick(() => {
-        this.isChecked = !this.isChecked;
+        // this.isChecked = !this.isChecked;
+
+        // 添加展开动画
+        animateTo({duration:300},()=>{
+          this.isChecked = !this.isChecked;
+        })
+
         this.clickIndex = this.index;
       })
     } else {
@@ -190,9 +197,9 @@ export default struct StudentListItem {
         Row() {
           Row() {
             if (this.isChecked) {
-              this.checkIcon($r('app.media.ic_checked'),'16vp','16vp')
+              this.checkIcon($r('app.media.ic_checked'), '16vp', '16vp')
             } else {
-              this.checkIcon($r('app.media.ic_unchecked'),'16vp','16vp')
+              this.checkIcon($r('app.media.ic_unchecked'), '16vp', '16vp')
             }
           }
           .onClick(() => {
