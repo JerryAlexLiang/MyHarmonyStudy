@@ -41,6 +41,10 @@
       "value": "64vp"
     },
     {
+      "name": "list_item_expand_height",
+      "value": "120vp"
+    },
+    {
       "name": "grid_item_width",
       "value": "120vp"
     },

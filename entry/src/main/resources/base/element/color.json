@@ -23,6 +23,10 @@
     {
       "name": "mainPage_backgroundColor",
       "value": "#F1F3F5"
+    },
+    {
+      "name": "transparent_backgroundColor",
+      "value": "#88888888"
     }
   ]
 }

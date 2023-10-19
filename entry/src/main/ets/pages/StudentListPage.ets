@@ -4,6 +4,7 @@ import router from '@ohos.router';
 import prompt from '@system.prompt';
 import { DataItemBean } from '../viewmodel/DataItemBean';
 import CommonConstants from '../common/constants/CommonConstants';
+import { StudentDetailDialog } from '../view/StudentDetailDialog';
 // import DataItemBean from '../viewmodel/DataItemBean';
 
 const TAG = '[StudentListPage]';
@@ -18,10 +19,33 @@ export struct StudentListPage {
   @State backMessage: string = '';
 
   // 是否是List组件模式
+  // 组件内的状态管理：@State
   @State isListModel: boolean = true;
+
+  // 是否点击当前Item
+  @State clickIndex: number = 0;
+
+  // 当前List/Grid点击Item
+  @State currentClickItemData: DataItemBean = undefined;
 
   // Swiper控制器
   private swiperController: SwiperController = new SwiperController();
+  @State confirmMessage: string = ""
+  dialogController: CustomDialogController = new CustomDialogController({
+    builder: StudentDetailDialog({
+      // cancel: () => {
+      //   this.showToast('Cancel')
+      // },
+      // confirm: () => {
+      //   this.showToast(this.confirmMessage)
+      // },
+      // studentData: this.studentList2[0],
+      studentData: this.currentClickItemData,
+    }),
+    autoCancel: true,
+    alignment: DialogAlignment.Center,
+    customStyle: true
+  })
 
   // 调用router.back()方法，不会新建页面，返回的是原来的页面，在原来页面中@State声明的变量不会重复声明，
   // 以及也不会触发页面的aboutToAppear()生命周期回调，因此无法直接在变量声明以及页面的aboutToAppear()
@@ -39,6 +63,12 @@ export struct StudentListPage {
     // this.studentList = DataModel.getStudentList();
     this.studentList2 = DataModel.getStudentList2();
     // this.backMessage = router.getParams()?.['backMessage'];
+  }
+
+  aboutToDisappear() {
+    // 在自定义组件即将析构销毁时将dialogControlle删除和置空
+    delete this.dialogController // 删除dialogController
+    this.dialogController = undefined // 将dialogController置空
   }
 
   showToast(message: string) {
@@ -101,11 +131,28 @@ export struct StudentListPage {
               // 3、startMargin：分割线距离列表侧边起始端的距离。
               // 4、endMargin: 分割线距离列表侧边结束端的距离
               List({ space: 16 }) {
-                ForEach(this.studentList2, (item: DataItemBean) => {
+                ForEach(this.studentList2, (item: DataItemBean, index: number) => {
                   ListItem() {
-                    StudentListItem({ studentData: item, isRowModel: true })
+                    // StudentListItem({ studentData: item, isListModel: true })
+
+                    // 将父组件的列表显示模式状态this.isListModel传递给子组件的编辑模式状态isListModel
+                    // 此处指定的参数都将在初始渲染时覆盖本地定义的默认值，并不是所有的参数都需要从父组件初始化
+                    StudentListItem({
+                      studentData: item,
+                      index: index,
+                      isListModel: this.isListModel,
+                      clickIndex: $clickIndex, // 带有“@Link”装饰的属性必须初始化为“$”
+                      onItemChildImageClick: () => {
+                        this.currentClickItemData = item
+
+                        if (this.dialogController != undefined) {
+                          this.dialogController.open()
+                          this.showToast(item.title)
+                        }
+                      }
+                    })
                   }
-                }, (item: string) => JSON.stringify(item))
+                }, (item, index) => JSON.stringify(item) + index)
               }
               // .width('90%')
               .divider({ strokeWidth: 1, color: Color.Gray, startMargin: 30, endMargin: 0 })
@@ -125,7 +172,22 @@ export struct StudentListPage {
               Grid() {
                 ForEach(this.studentList2, (item: DataItemBean) => {
                   GridItem() {
-                    StudentListItem({ studentData: item, isRowModel: false })
+                    // StudentListItem({ studentData: item, isListModel: false })
+                    // 将父组件的列表显示模式状态this.isListModel传递给子组件的编辑模式状态isListModel
+                    // 此处指定的参数都将在初始渲染时覆盖本地定义的默认值，并不是所有的参数都需要从父组件初始化
+                    StudentListItem({
+                      studentData: item,
+                      isListModel: this.isListModel,
+                      clickIndex: $clickIndex, // 带有“@Link”装饰的属性必须初始化为“$”
+                      onItemChildImageClick: () => {
+                        this.currentClickItemData = item
+
+                        if (this.dialogController != undefined) {
+                          this.dialogController.open()
+                          this.showToast(item.title)
+                        }
+                      }
+                    })
                   }
                 }, (item: string) => JSON.stringify(item))
               }
