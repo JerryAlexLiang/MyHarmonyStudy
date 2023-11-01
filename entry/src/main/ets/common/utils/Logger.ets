@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,42 +15,42 @@
 
 import hilog from '@ohos.hilog';
 
-/**
- * Common log for all features.
- */
-export class Logger {
+const LOGGER_PREFIX: string = 'ArkTS';
+
+class Logger {
   private domain: number;
   private prefix: string;
-  private format: string = `%{public}s, %{public}s`;
 
-  constructor(prefix: string) {
+  // format Indicates the log format string.
+  private format: string = '%{public}s, %{public}s';
+
+  /**
+   * constructor.
+   *
+   * @param prefix Identifies the log tag.
+   * @param domain Indicates the service domain, which is a hexadecimal integer ranging from 0x0 to 0xFFFFF
+   * @param args Indicates the log parameters.
+   */
+  constructor(prefix: string = '', domain: number = 0xFF00) {
     this.prefix = prefix;
-    this.domain = 0xFF00;
+    this.domain = domain;
   }
 
-  debug(...args: string[]) {
+  debug(...args: string[]): void {
     hilog.debug(this.domain, this.prefix, this.format, args);
   }
 
-  info(...args: string[]) {
+  info(...args: string[]): void {
     hilog.info(this.domain, this.prefix, this.format, args);
   }
 
-  warn(...args: string[]) {
+  warn(...args: string[]): void {
     hilog.warn(this.domain, this.prefix, this.format, args);
   }
 
-  error(...args: string[]) {
+  error(...args: string[]): void {
     hilog.error(this.domain, this.prefix, this.format, args);
-  }
-
-  fatal(...args: string[]) {
-    hilog.fatal(this.domain, this.prefix, this.format, args);
-  }
-
-  isLoggable(level: number) {
-    hilog.isLoggable(this.domain, this.prefix, level);
   }
 }
 
-export default new Logger('[PageRouter]');
+export default new Logger(LOGGER_PREFIX);

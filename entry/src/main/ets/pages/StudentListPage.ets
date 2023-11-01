@@ -158,7 +158,7 @@ export struct StudentListPage {
               .divider({ strokeWidth: 1, color: Color.Gray, startMargin: 30, endMargin: 0 })
               // .listDirection(Axis.Horizontal)
 
-              Text('---没有更多了---').fontSize('22vp').margin('30vp')
+              Text('---没有更多了---').fontSize('16vp').margin('30vp')
             }
           }
           .scrollBar(BarState.Off)
@@ -198,7 +198,7 @@ export struct StudentListPage {
               .height('640vp')
               // .layoutDirection(GridDirection.Row)
 
-              Text('---没有更多了---').fontSize('22vp').margin('30vp')
+              Text('---没有更多了---').fontSize('16vp').margin('30vp')
             }
           }
           .scrollBar(BarState.Off)

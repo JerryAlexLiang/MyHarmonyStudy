@@ -3,6 +3,7 @@ import GalleryPage from '../view/GalleryPage';
 import { StudentListPage } from './StudentListPage';
 import router from '@ohos.router';
 import prompt from '@system.prompt';
+import ArticlePage from '../view/ArticlePage';
 
 const TAG = '[MainPage]';
 
@@ -73,11 +74,12 @@ struct MainPage {
         ))
 
       TabContent() {
-        GalleryPage()
+        // GalleryPage()
+        ArticlePage()
       }
       .tabBar(
         this.TabBuilder(
-          CommonConstants.PICTURE_TITLE, CommonConstants.PICTURE_TAB_INDEX,
+          CommonConstants.ARTICLE_TITLE, CommonConstants.ARTICLE_TAB_INDEX,
           $r('app.media.ic_checked'), $r('app.media.ic_unchecked')
         ))
     }

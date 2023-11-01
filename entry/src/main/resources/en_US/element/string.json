@@ -71,6 +71,14 @@
     {
       "name": "Student_image_7",
       "value": "https://tse1-mm.cn.bing.net/th/id/OIP-C.vzhdsIrhKA_hJ3mqJMKcVQHaIC?pid=ImgDet&rs=1"
+    },
+    {
+      "name": "http_error_message",
+      "value": "Network request failed, please try later!"
+    },
+    {
+      "name": "page_none_msg",
+      "value": "Network loading failure"
     }
   ]
 }

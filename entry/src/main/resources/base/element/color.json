@@ -27,6 +27,10 @@
     {
       "name": "transparent_backgroundColor",
       "value": "#88888888"
+    },
+    {
+      "name": "fontColor_text3",
+      "value": "#182431"
     }
   ]
 }

@@ -1,22 +1,17 @@
-/*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 /**
  * Common constants for all features.
  */
 export default class CommonConstants {
+  static readonly NONE_IMAGE_SIZE: number = 120;
+  static readonly NONE_TEXT_opacity: number = 0.6;
+  static readonly NONE_TEXT_size: number = 16;
+  static readonly NONE_TEXT_margin: number = 12;
+
+  /**
+   * The off set coefficient.
+   */
+  static readonly Y_OFF_SET_COEFFICIENT: number = 0.1;
+
   /**
    * The index page message.
    */
@@ -96,7 +91,12 @@ export default class CommonConstants {
   /**
    * Student picture tab index
    */
-  static readonly PICTURE_TAB_INDEX = 1;
+  // static readonly PICTURE_TAB_INDEX = 1;
+
+  /**
+   * Student picture tab index
+   */
+  static readonly ARTICLE_TAB_INDEX = 1;
 
   /**
    * Title text of the home page
@@ -107,4 +107,82 @@ export default class CommonConstants {
    * Title text of the setting page
    */
   static readonly PICTURE_TITLE = '靓照';
+
+  /**
+   * Title text of the Article page
+   */
+  static readonly ARTICLE_TITLE = '博客';
+
+  /**
+   * The http timeout duration.
+   */
+  static readonly HTTP_READ_TIMEOUT: number = 10000;
+
+  /**
+   * Http request success status code.
+   */
+  static readonly HTTP_CODE_200: number = 200;
+
+  /**
+   * The request success status code.
+   */
+  static readonly SERVER_CODE_SUCCESS: number = 0;
+
+  /**
+   * ArticleList第一页起始为0
+   */
+  static readonly FIRST_PAGE: number = 0
+
+  /**
+   * 设置当前页为737，每页Item数量为20,加载两次即可加载完所有数据，看到所有加载UI效果
+   */
+  static readonly TEST_FIRST_PAGE = 737;
+
+  /**
+   * The page size.
+   */
+  static readonly PAGE_SIZE: number = 5;
+
+  static readonly TEXT_PAGE_SIZE: number = 20;
+
+  /**
+   * The animation duration.
+   */
+  static readonly ANIMATION_DURATION: number = 2000;
+}
+
+export class WanAndroidApiService {
+
+  // WanAndroid-BaseUrl
+  static readonly WAN_ANDROID_SERVER: string = 'https://www.wanandroid.com';
+
+  // 首页文章 /article/list/0/json
+  // https://www.wanandroid.com/article/list/0/json?page_size=2
+  static readonly HOME_ARTICLE_LIST: string = '/article/list/';
+}
+/**
+ * The refresh state enum.
+ */
+export const enum RefreshState {
+  DropDown = 0,
+  Release = 1,
+  Refreshing = 2,
+  Success = 3,
+  Fail = 4
+}
+
+/**
+ * The newsList state enum.
+ */
+export const enum PageState {
+  Loading = 0,
+  Success = 1,
+  Fail = 2
+}
+
+/**
+ * The request content type enum.
+ */
+export const enum ContentType {
+  JSON = 'application/json'
 }
