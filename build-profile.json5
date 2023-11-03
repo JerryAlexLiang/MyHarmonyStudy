@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\ADRDC\\.ohos\\config\\auto_debug_MyHarmonyStudy_com.liang.myharmonystudy_80086000136360611.cer",
+          "storePassword": "0000001BE0CC0D93AB258BDD2310CA28D9BF2D4A4262468366A45F30DB43120B62747588CCC6CA74C7AE55",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BFD17EB4EAA662CC910A1CD4E125075CDB252FED981DD57B060BEFC409ABD1DE64A3BDE5BA9F60B",
+          "profile": "C:\\Users\\ADRDC\\.ohos\\config\\auto_debug_MyHarmonyStudy_com.liang.myharmonystudy_80086000136360611.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\ADRDC\\.ohos\\config\\auto_debug_MyHarmonyStudy_com.liang.myharmonystudy_80086000136360611.p12"
+        }
+      }
+    ],
     "compileSdkVersion": 9,
     "compatibleSdkVersion": 9,
     "products": [

@@ -40,7 +40,7 @@ export class DataModel {
       },
       {
         "title": "李天泽",
-        "image": "https://img9.doubanio.com/icon/up243132021-15.jpg",
+        "image": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202002%2F23%2F20200223151740_uudbp.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1701569400&t=d22c85d97eb299f8b081b0d5f88ea3f5",
       },
       {
         "title": "马嘉祺",
@@ -68,7 +68,7 @@ export class DataModel {
       },
       {
         "title": "李天泽2",
-        "image": "https://img9.doubanio.com/icon/up243132021-15.jpg",
+        "image": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202002%2F23%2F20200223151740_uudbp.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1701569400&t=d22c85d97eb299f8b081b0d5f88ea3f5",
       },
       {
         "title": "马嘉祺2",

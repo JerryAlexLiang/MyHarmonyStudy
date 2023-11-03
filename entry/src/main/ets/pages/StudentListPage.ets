@@ -4,7 +4,7 @@ import router from '@ohos.router';
 import prompt from '@system.prompt';
 import { DataItemBean } from '../viewmodel/DataItemBean';
 import CommonConstants from '../common/constants/CommonConstants';
-import { StudentDetailDialog } from '../view/StudentDetailDialog';
+import { StudentCardDialog } from '../view/StudentCardDialog';
 // import DataItemBean from '../viewmodel/DataItemBean';
 
 const TAG = '[StudentListPage]';
@@ -32,7 +32,7 @@ export struct StudentListPage {
   private swiperController: SwiperController = new SwiperController();
   @State confirmMessage: string = ""
   dialogController: CustomDialogController = new CustomDialogController({
-    builder: StudentDetailDialog({
+    builder: StudentCardDialog({
       // cancel: () => {
       //   this.showToast('Cancel')
       // },

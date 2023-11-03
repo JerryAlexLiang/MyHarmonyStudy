@@ -1,5 +1,8 @@
 import { WanArticleBean } from '../common/bean/WanArticleBean'
 import prompt from '@system.prompt';
+import router from '@ohos.router';
+import CommonConstants from '../common/constants/CommonConstants';
+import Logger from '../common/utils/Logger';
 
 @Component
 export default struct ArticleItem {
@@ -68,6 +71,15 @@ export default struct ArticleItem {
     }
     .onClick(() => {
       this.showToast(this.articleData.title)
+      router.pushUrl({
+        url: CommonConstants.ARTICLE_DETAIL_PAGE,
+        params: {
+          // linkUrl: this.articleData.link
+          articleData: this.articleData
+        }
+      }).catch((error) => {
+        Logger.error('ArticlePage', 'Error：' + JSON.stringify(error))
+      })
     })
     .padding('10vp')
     .width('100%')

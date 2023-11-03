@@ -27,7 +27,9 @@ export default struct ArticlePage {
   // 是否开始加载下一页
   @State isLoadMore: boolean = false;
   // List滑动监听
-  private scroller: Scroller;
+  private scroller: Scroller = new Scroller();
+  // 是否显示悬浮Button，初始状态不显示
+  @State isShowFloatingButton: boolean = false;
 
   /**
    * 请求列表数据
@@ -65,7 +67,11 @@ export default struct ArticlePage {
             promptAction.showToast({ message: 'Loading ' + this.currentPage })
           }
 
-          this.isRefreshingFromButton = false;
+          // 如果是悬浮按钮返回第一页，请求成功后修改状态，且将List滑动到顶部
+          if (this.isRefreshingFromButton) {
+            this.isRefreshingFromButton = false;
+            this.scroller.scrollToIndex(0)
+          }
 
           // 判断是否是最后一页
           // 接口中有个字段over为true代表没有更多数据了
@@ -139,14 +145,14 @@ export default struct ArticlePage {
 
   @Builder ArticleListComponent() {
     List({ space: 16, scroller: this.scroller }) {
-      ListItem() {
-        Text('重新加载页面数据').onClick(() => {
-          this.pageState = PageState.Loading;
-          this.isRefreshing = true;
-          this.getWanArticleList();
-        })
-          .fontColor(Color.Red)
-      }
+      // ListItem() {
+      //   Text('重新加载页面数据').onClick(() => {
+      //     this.pageState = PageState.Loading;
+      //     this.isRefreshing = true;
+      //     this.getWanArticleList();
+      //   })
+      //     .fontColor(Color.Red)
+      // }
 
       ForEach(this.articleListData, (item: WanArticleBean, index: number) => {
         ListItem() {
@@ -163,15 +169,49 @@ export default struct ArticlePage {
     .backgroundColor($r('app.color.page_background'))
     .padding({ left: '16vp', right: 16 })
     .divider({ strokeWidth: 0.1, color: Color.Red })
+    .onScrollStart(() => {
+      // List滑动时不显示悬浮按钮
+      this.isShowFloatingButton = false;
+    })
+    .onScrollStop(() => {
+      // List停止滑动时不显示悬浮按钮
+      this.isShowFloatingButton = true;
+    })
+  }
+
+  @Builder ReloadPageButton() {
+    Button() {
+      Image($r('app.media.ic_refresh'))
+        .rotate({ angle: 90 })
+        .width(30)
+        .height(30)
+    }
+    .backgroundColor(Color.Yellow)
+    .border({ width: 1 })
+    .borderColor(Color.Blue)
+    .borderStyle(BorderStyle.Dotted)
+    .width(35)
+    .height(35)
+    .position({ x: '80%', y: '70%' })
+    .shadow({ radius: 10 })
+    .onClick(() => {
+      this.pageState = PageState.Loading;
+      this.isRefreshing = true;
+      this.getWanArticleList();
+    })
   }
 
   @Builder LoadFirstPageButton() {
     Button() {
-      Image($r('app.media.ic_arrow_next'))
-        .rotate({ angle: -90 })
+      Image($r('app.media.ic_back'))
+        .rotate({ angle: 90 })
         .width(30)
         .height(30)
     }
+    .backgroundColor(Color.Red)
+    .border({ width: 1 })
+    .borderColor(Color.Blue)
+    .borderStyle(BorderStyle.Dotted)
     .width(35)
     .height(35)
     .position({ x: '80%', y: '80%' })
@@ -190,11 +230,15 @@ export default struct ArticlePage {
 
   @Builder LoadNextPageButton() {
     Button() {
-      Image($r('app.media.ic_arrow_next'))
-        .rotate({ angle: 90 })
+      Image($r('app.media.ic_back'))
+        .rotate({ angle: -90 })
         .width(30)
         .height(30)
     }
+    .backgroundColor(Color.Red)
+    .border({ width: 1 })
+    .borderColor(Color.Yellow)
+    .borderStyle(BorderStyle.Dashed)
     .width(35)
     .height(35)
     .position({ x: '80%', y: '90%' })
@@ -222,16 +266,17 @@ export default struct ArticlePage {
 
         this.ArticleListComponent()
 
-        this.LoadFirstPageButton()
-
-        this.LoadNextPageButton()
+        if (this.isShowFloatingButton) {
+          this.ReloadPageButton()
+          this.LoadFirstPageButton()
+          this.LoadNextPageButton()
+        }
 
         if (this.isRefreshing || this.isRefreshingFromButton) {
           LoadingProgress()
             .width(75)
             .height(75)
             .color(Color.Red)
-
         }
       }
     }
@@ -241,6 +286,12 @@ export default struct ArticlePage {
     .onRefreshing(() => {
       this.getWanArticleList();
     })
+    // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
+    // 解决方法：
+    // 在List的父容器加上代码layoutWeight(1)。
+    // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
+    // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
+    .layoutWeight(1)
   }
 
   build() {
@@ -254,7 +305,23 @@ export default struct ArticlePage {
         this.getWanArticleList();
       })
     } else if (this.pageState === PageState.Success) {
-      this.ArticleListLayout()
+      Column() {
+        Text('重新加载页面数据').onClick(() => {
+          this.pageState = PageState.Loading;
+          this.isRefreshing = true;
+          this.getWanArticleList();
+        })
+          .fontColor(Color.Red)
+          .height('30%')
+
+        // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
+        // 解决方法：
+        // 在List的父容器加上代码layoutWeight(1)。
+        // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
+        // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
+        this.ArticleListLayout()
+      }
+
     }
   }
 

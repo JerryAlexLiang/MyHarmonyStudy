@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/MainPage",
     "pages/StudentDetailPage",
-    "pages/StudentListPage"
+    "pages/StudentListPage",
+    "pages/ArticleDetailPage"
   ]
 }

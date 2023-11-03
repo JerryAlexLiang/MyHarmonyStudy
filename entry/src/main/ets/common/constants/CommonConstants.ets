@@ -29,6 +29,11 @@ export default class CommonConstants {
   static readonly STUDENT_DETAIL_URL: string = 'pages/StudentDetailPage';
 
   /**
+   * ArticleDetailPage
+   */
+  static readonly ARTICLE_DETAIL_PAGE: string = 'pages/ArticleDetailPage';
+
+  /**
    * The second page message.
    */
   static readonly SECOND_MESSAGE: string = 'Second Page';
@@ -142,7 +147,6 @@ export default class CommonConstants {
    * The page size.
    */
   static readonly PAGE_SIZE: number = 5;
-
   static readonly TEXT_PAGE_SIZE: number = 20;
 
   /**

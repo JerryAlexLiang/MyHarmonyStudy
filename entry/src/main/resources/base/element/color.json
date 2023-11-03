@@ -13,6 +13,10 @@
       "value": "#FF00FF"
     },
     {
+      "name": "page_background_dark",
+      "value": "#000000"
+    },
+    {
       "name": "mainPage_selected_color",
       "value": "#1698CE"
     },
