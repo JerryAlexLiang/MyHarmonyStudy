@@ -4,6 +4,10 @@ import WanArticleViewModel from '../viewmodel/WanArticleViewModel';
 import promptAction from '@ohos.promptAction';
 import { ArticlePageListBean } from '../common/bean/ArticlePageListBean';
 import ArticleItem from './ArticleItem';
+import { WanBannerBean } from '../common/bean/WanBannerBean';
+import prompt from '@system.prompt';
+import Logger from '../common/utils/Logger';
+import router from '@ohos.router';
 
 @Component
 export default struct ArticlePage {
@@ -30,6 +34,14 @@ export default struct ArticlePage {
   private scroller: Scroller = new Scroller();
   // 是否显示悬浮Button，初始状态不显示
   @State isShowFloatingButton: boolean = false;
+
+  // Swiper控制器
+  private swiperController: SwiperController = new SwiperController();
+
+  // Banner数据
+  private wanHomeBannerList: Array<WanBannerBean> = [];
+  // Banner跳转组装数据
+  private articleData: WanArticleBean = new WanArticleBean();
 
   /**
    * 请求列表数据
@@ -101,9 +113,26 @@ export default struct ArticlePage {
     }, 1000)
   }
 
+  getWanHomeBannerList() {
+    WanArticleViewModel.getWanHomeBanner().then((data: WanBannerBean[]) => {
+      // 赋值
+      this.wanHomeBannerList = data;
+    }).catch((error: string | Resource) => {
+      // 请求失败状态更新
+      // 提示Toast
+      promptAction.showToast({
+        message: error,
+        duration: CommonConstants.ANIMATION_DURATION
+      });
+    })
+  }
+
   aboutToAppear() {
     // 请求列表数据
     this.getWanArticleList()
+    // 请求Banner数据
+    //this.studentList2 = DataModel.getStudentList2();
+    this.getWanHomeBannerList();
   }
 
   @Builder LoadingComponent() {
@@ -145,19 +174,14 @@ export default struct ArticlePage {
 
   @Builder ArticleListComponent() {
     List({ space: 16, scroller: this.scroller }) {
-      // ListItem() {
-      //   Text('重新加载页面数据').onClick(() => {
-      //     this.pageState = PageState.Loading;
-      //     this.isRefreshing = true;
-      //     this.getWanArticleList();
-      //   })
-      //     .fontColor(Color.Red)
-      // }
+      // HomeBanner-Swiper可以不包含在ListItem中
+      this.HomeBanner(this.wanHomeBannerList)
 
       ForEach(this.articleListData, (item: WanArticleBean, index: number) => {
         ListItem() {
           ArticleItem({ articleData: item, index: index })
         }
+        .padding({ left: '16vp', right: 16 })
       }, (item, index) => JSON.stringify(item) + index)
 
       ListItem() {
@@ -167,7 +191,7 @@ export default struct ArticlePage {
     .width('100%')
     .height('100%')
     .backgroundColor($r('app.color.page_background'))
-    .padding({ left: '16vp', right: 16 })
+    // .padding({ left: '16vp', right: 16 })
     .divider({ strokeWidth: 0.1, color: Color.Red })
     .onScrollStart(() => {
       // List滑动时不显示悬浮按钮
@@ -253,6 +277,63 @@ export default struct ArticlePage {
     })
   }
 
+  /**
+   * Banner
+   */
+  @Builder HomeBanner(dataList: Array<WanBannerBean>) {
+    Swiper(this.swiperController) {
+      ForEach(dataList, (item: WanBannerBean) => {
+        RelativeContainer() {
+          Image(item.imagePath)
+            .borderRadius($r('app.float.home_swiper_borderRadius'))
+            .width('100%')
+            .height('100%')
+            .objectFit(ImageFit.Fill)
+            .onClick(() => {
+              // 组装数据
+              this.articleData.link = item.url;
+              this.articleData.title = item.title;
+              this.articleData.author = '站内';
+
+              router.pushUrl({
+                url: CommonConstants.ARTICLE_DETAIL_PAGE,
+                params: {
+                  articleData: this.articleData
+                }
+              }).catch((error) => {
+                Logger.error('ArticlePage', 'Error：' + JSON.stringify(error))
+              })
+              this.showToast(item.title)
+            })
+            .alignRules({
+              top: { anchor: "__container__", align: VerticalAlign.Top },
+              left: { anchor: "__container__", align: HorizontalAlign.Start },
+              // bottom: { anchor: "__container__", align: VerticalAlign.Bottom },
+              // right: { anchor: "__container__", align: HorizontalAlign.End }
+            })
+            .id("image")
+
+          Text(item.title)
+            .width('100%')
+            .padding(10)
+            .fontColor(Color.White)
+            .backgroundColor($r('app.color.transparent_backgroundColor'))
+            .alignRules({
+              bottom: { anchor: "image", align: VerticalAlign.Bottom },
+              left: { anchor: "image", align: HorizontalAlign.Start }
+            })
+            .id("text")
+        }
+      }, (item: WanBannerBean) => JSON.stringify(item))
+    }
+    .borderRadius($r('app.float.home_swiper_borderRadius'))
+    .width('100%')
+    .height('25%')
+    .autoPlay(true)
+    .indicatorStyle({ mask: true, bottom: '10vp', right: '20vp', selectedColor: Color.Red })
+    .margin({ top: '5vp', bottom: '10vp' })
+  }
+
   @Builder ArticleListLayout() {
     // 可以进行页面下拉操作并显示刷新动效的容器组件
     // 1、refreshing	: boolean	必填参数	当前组件是否正在刷新。该参数支持$$双向绑定变量
@@ -262,9 +343,50 @@ export default struct ArticlePage {
     // - 100表示下拉刷新容器紧紧跟随手势下拉而下拉。
     // - 数值越大，下拉刷新容器跟随手势下拉的反应越灵敏。
     Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
-      Stack() {
+      this.ArticleListComponent()
+    }
+    .onStateChange((refreshStatus: RefreshStatus) => {
 
-        this.ArticleListComponent()
+    })
+    .onRefreshing(() => {
+      this.getWanArticleList();
+    })
+    // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
+    // 解决方法：
+    // 在List的父容器加上代码layoutWeight(1)。
+    // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
+    // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
+    // .layoutWeight(1)
+    // 但是如果联动滚动的话，就不能添加.layoutWeight(1)
+  }
+
+  showToast(message: string) {
+    prompt.showToast({
+      message: message
+    })
+  }
+
+  build() {
+    if (this.pageState === PageState.Loading) {
+      Column() {
+        LoadingProgress().width('100vp').width('100vp').color(Color.Red);
+      }
+    } else if (this.pageState === PageState.Fail) {
+      this.FailLayout(() => {
+        this.pageState = PageState.Loading;
+        this.getWanArticleList();
+      })
+    } else if (this.pageState === PageState.Success) {
+      Stack() {
+        Column() {
+          // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
+          // 解决方法：
+          // 在List的父容器加上代码layoutWeight(1)。
+          // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
+          // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
+          this.ArticleListLayout()
+        }
+        .backgroundColor($r('app.color.page_background'))
 
         if (this.isShowFloatingButton) {
           this.ReloadPageButton()
@@ -279,49 +401,6 @@ export default struct ArticlePage {
             .color(Color.Red)
         }
       }
-    }
-    .onStateChange((refreshStatus: RefreshStatus) => {
-
-    })
-    .onRefreshing(() => {
-      this.getWanArticleList();
-    })
-    // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
-    // 解决方法：
-    // 在List的父容器加上代码layoutWeight(1)。
-    // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
-    // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
-    .layoutWeight(1)
-  }
-
-  build() {
-    if (this.pageState === PageState.Loading) {
-      Column() {
-        LoadingProgress().width('100vp').width('100vp').color(Color.Red);
-      }
-    } else if (this.pageState === PageState.Fail) {
-      this.FailLayout(() => {
-        this.pageState = PageState.Loading;
-        this.getWanArticleList();
-      })
-    } else if (this.pageState === PageState.Success) {
-      Column() {
-        Text('重新加载页面数据').onClick(() => {
-          this.pageState = PageState.Loading;
-          this.isRefreshing = true;
-          this.getWanArticleList();
-        })
-          .fontColor(Color.Red)
-          .height('30%')
-
-        // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
-        // 解决方法：
-        // 在List的父容器加上代码layoutWeight(1)。
-        // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
-        // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
-        this.ArticleListLayout()
-      }
-
     }
   }
 

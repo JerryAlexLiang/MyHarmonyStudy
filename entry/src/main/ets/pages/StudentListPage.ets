@@ -31,7 +31,9 @@ export struct StudentListPage {
   // Swiper控制器
   private swiperController: SwiperController = new SwiperController();
   @State confirmMessage: string = ""
-  dialogController: CustomDialogController = new CustomDialogController({
+
+  // 弹窗控制器
+  private dialogController: CustomDialogController = new CustomDialogController({
     builder: StudentCardDialog({
       // cancel: () => {
       //   this.showToast('Cancel')
@@ -112,7 +114,8 @@ export struct StudentListPage {
     }
     .autoPlay(true)
     .indicatorStyle({ mask: true, bottom: '10vp' })
-    .margin({ top: $r('app.float.home_swiper_margin'), bottom: $r('app.float.home_swiper_margin') })
+    // .margin({ top: $r('app.float.home_swiper_margin'), bottom: $r('app.float.home_swiper_margin') })
+    .margin({ bottom: '10vp' })
   }
 
   build() {

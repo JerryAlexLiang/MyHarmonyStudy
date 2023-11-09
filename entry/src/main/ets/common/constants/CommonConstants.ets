@@ -163,6 +163,9 @@ export class WanAndroidApiService {
   // 首页文章 /article/list/0/json
   // https://www.wanandroid.com/article/list/0/json?page_size=2
   static readonly HOME_ARTICLE_LIST: string = '/article/list/';
+
+  // 首页Banner-GET-https://www.wanandroid.com/banner/json
+  static readonly HOME_BANNER_LIST: string = '/banner/json';
 }
 /**
  * The refresh state enum.
