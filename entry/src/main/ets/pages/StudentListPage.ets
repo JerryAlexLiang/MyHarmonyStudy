@@ -5,6 +5,8 @@ import prompt from '@system.prompt';
 import { DataItemBean } from '../viewmodel/DataItemBean';
 import CommonConstants from '../common/constants/CommonConstants';
 import { StudentCardDialog } from '../view/StudentCardDialog';
+import { PreferencesUtil } from '../common/db/PreferencesUtil';
+import Logger from '../common/utils/Logger';
 // import DataItemBean from '../viewmodel/DataItemBean';
 
 const TAG = '[StudentListPage]';
@@ -65,6 +67,11 @@ export struct StudentListPage {
     // this.studentList = DataModel.getStudentList();
     this.studentList2 = DataModel.getStudentList2();
     // this.backMessage = router.getParams()?.['backMessage'];
+
+    PreferencesUtil.prototype.getChangeStudentListMode().then((value) => {
+      this.isListModel = value;
+      Logger.debug(TAG, 'Get the value of isListModel: ' + this.isListModel);
+    });
   }
 
   aboutToDisappear() {
@@ -81,12 +88,14 @@ export struct StudentListPage {
 
   @Builder NavigationMenus() {
     Row() {
-      Toggle({ type: ToggleType.Switch, isOn: true })
+      Toggle({ type: ToggleType.Switch, isOn: this.isListModel })
         .selectedColor(Color.Red)
         .switchPointColor(Color.White)
         .onChange((isOn: boolean) => {
           // this.isListModel = !this.isListModel
           this.isListModel = isOn
+
+          PreferencesUtil.prototype.saveStudentListMode(this.isListModel)
         })
     }
   }

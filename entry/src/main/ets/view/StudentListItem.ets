@@ -226,7 +226,9 @@ export default struct StudentListItem {
       }
       .borderRadius(10)
       .width('100%')
-      .height($r('app.float.grid_item_height'))
+      // .height($r('app.float.grid_item_height'))
+      // 指定当前组件的长宽比
+      .aspectRatio(1)
       .backgroundImage(this.studentData.image)
       .backgroundImageSize(ImageSize.Cover)
       .onClick(this.onItemChildImageClick)

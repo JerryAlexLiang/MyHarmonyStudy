@@ -1,11 +1,20 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import PreferencesUtil from '../common/db/PreferencesUtil';
+import { GlobalContext } from '../common/utils/GlobalContext';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     // 应用初始化
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+
+    // 要通过用户首选项实现数据持久化，首先要获取Preferences实例。
+    // 读取指定文件，将数据加载到Preferences实例，用于数据操作.
+    GlobalContext.getContext().setObject('abilityWant', want);
+    PreferencesUtil.createStudentListModelPreferences(this.context);
+    // 设置默认学生列表模式-Grid
+    PreferencesUtil.saveDefaultStudentListMode(false);
   }
 
   onDestroy() {
