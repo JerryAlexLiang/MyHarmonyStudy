@@ -1,4 +1,6 @@
 import router from '@ohos.router'
+import CommonConstants from '../common/constants/CommonConstants';
+import Logger from '../common/utils/Logger';
 import { DataItemBean } from '../viewmodel/DataItemBean';
 // import DataItemBean from '../viewmodel/DataItemBean';
 
@@ -69,6 +71,24 @@ struct StudentDetailPage {
         .onComplete(() => {
           this.isShowLoadingProgress = false
         })
+          // 共享元素转场：通过修改共享元素的sharedTransition属性设置元素在不同页面之间过渡动效。
+          // 例如，如果两个页面使用相同的图片（但位置和大小不同），图片就会在这两个页面之间流畅地平移和缩放。
+        .sharedTransition(CommonConstants.SHARE_TRANSITION_ID_STUDENT_IMAGE, {
+          duration: CommonConstants.TRANSITION_ANIMATION_DURATION,
+          curve: Curve.Smooth,
+          delay: CommonConstants.SHARE_ITEM_ANIMATION_DELAY
+        })
+        .onClick(() => {
+          router.pushUrl({
+            url: CommonConstants.BIG_IMAGE_URL,
+            params: {
+              imageUrl: this.studentData.image
+            }
+          }).catch((error) => {
+            Logger.error('Push BigImagePage error: ' + JSON.stringify(error))
+          })
+        })
+
 
       // Text(this.name)
       Text(this.studentData.title)
@@ -222,5 +242,6 @@ struct StudentDetailPage {
     .height('100%')
     .padding('16vp')
     .backgroundColor($r('app.color.page_background'))
+    ////    "pages/BigImagePage"
   }
 }

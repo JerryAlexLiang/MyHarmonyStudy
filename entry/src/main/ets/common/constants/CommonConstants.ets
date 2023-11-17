@@ -8,6 +8,21 @@ export default class CommonConstants {
   static readonly NONE_TEXT_margin: number = 12;
 
   /**
+   * Share transition id.
+   */
+  static readonly SHARE_TRANSITION_ID_STUDENT_IMAGE = 'studentImage';
+
+  /**
+   * Transition animation duration.
+   */
+  static readonly TRANSITION_ANIMATION_DURATION: number = 600;
+
+  /**
+   * Share item animation delay.
+   */
+  static readonly SHARE_ITEM_ANIMATION_DELAY = 100;
+
+  /**
    * The off set coefficient.
    */
   static readonly Y_OFF_SET_COEFFICIENT: number = 0.1;
@@ -21,6 +36,11 @@ export default class CommonConstants {
    * The src msg.
    */
   static readonly SECOND_SRC_MSG: string = 'Index页面传来的数据';
+
+  /**
+   * BigImagePage
+   */
+  static readonly BIG_IMAGE_URL: string = 'pages/BigImagePage';
 
   /**
    * The second page url.

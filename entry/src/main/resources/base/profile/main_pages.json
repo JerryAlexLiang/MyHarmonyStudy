@@ -4,6 +4,7 @@
     "pages/MainPage",
     "pages/StudentDetailPage",
     "pages/StudentListPage",
-    "pages/ArticleDetailPage"
+    "pages/ArticleDetailPage",
+    "pages/BigImagePage"
   ]
 }
