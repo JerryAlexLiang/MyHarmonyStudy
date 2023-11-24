@@ -24,6 +24,9 @@ struct StudentDetailPage {
   // 是否显示加载Progress
   @State isShowLoadingProgress: boolean = true;
 
+  // 姓名大小
+  @State nameFontSize: number = 22;
+
   aboutToAppear() {
     console.log(TAG, 'StudentDetailPage接收的参数是: title= ' + this.studentData.title);
     console.log(TAG, 'StudentDetailPage接收的参数是: image= ' + this.studentData.image);
@@ -39,6 +42,40 @@ struct StudentDetailPage {
     console.log(TAG, "onPageShow info" + info)
     console.log(TAG, "onPageShow info" + name)
     console.log(TAG, "onPageShow info" + image)
+  }
+
+  // // 自定义方式：完全自定义转场过程的效果
+  // @State scale2: number = 1
+  // @State opacity2: number = 1
+
+  /**
+   * 自定义方式：完全自定义转场过程的效果
+   */
+  // pageTransition() {
+  //   // 进场过程中会逐帧触发onEnter回调，入参为动效的归一化进度(0% -- 100%)
+  //   PageTransitionEnter({ duration: 1200, curve: Curve.Linear })
+  //     .onEnter((type: RouteType, progress: number) => {
+  //       this.scale2 = 1
+  //       this.opacity2 = progress
+  //     });
+  //   // 退场过程中会逐帧触发onExit回调，入参为动效的归一化进度(0% -- 100%)
+  //   PageTransitionExit({ duration: 1500, curve: Curve.Ease })
+  //     .onExit((type: RouteType, progress: number) => {
+  //       this.scale2 = 1 - progress
+  //       this.opacity2 = 1
+  //     });
+  // }
+
+  /**
+   * 使用全局pageTransition方法配置页面转换参数。
+   * SlideEffect.Bottom：进入时从屏幕底部滑动
+   * SlideEffect.Bottom：退出时从屏幕底部滑出
+   */
+  pageTransition() {
+    PageTransitionEnter({ duration: CommonConstants.TRANSITION_ANIMATION_DURATION, curve: Curve.Smooth })
+      .slide(SlideEffect.Bottom);
+    PageTransitionExit({ duration: CommonConstants.TRANSITION_ANIMATION_DURATION, curve: Curve.Smooth })
+      .slide(SlideEffect.Bottom);
   }
 
   build() {
@@ -243,5 +280,7 @@ struct StudentDetailPage {
     .padding('16vp')
     .backgroundColor($r('app.color.page_background'))
     ////    "pages/BigImagePage"
+    // .scale({ x: this.scale2 })
+    // .opacity(this.opacity2)
   }
 }

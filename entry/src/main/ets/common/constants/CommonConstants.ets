@@ -8,14 +8,39 @@ export default class CommonConstants {
   static readonly NONE_TEXT_margin: number = 12;
 
   /**
-   * Share transition id.
+   * Component transition rotate.
    */
-  static readonly SHARE_TRANSITION_ID_STUDENT_IMAGE = 'studentImage';
+  static readonly COMPONENT_TRANSITION_ROTATE: ComponentTransitionRotate = {
+    x: 0, y: 1, z: 0, angle: 720
+  };
+
+  /**
+   * Component transition opacity.
+   */
+  static readonly COMPONENT_TRANSITION_OPACITY = 0;
+
+  static readonly COMPONENT_NO_TRANSITION_OPACITY = 1;
+
+  /**
+   * Component transition scale.
+   */
+  static readonly COMPONENT_TRANSITION_SCALE_OPEN: CustomTransition = {
+    x: 0.5, y: 0.5
+  };
+
+  static readonly COMPONENT_TRANSITION_SCALE_CLOSE: CustomTransition = {
+    x: 0.0, y: 0.0
+  };
 
   /**
    * Transition animation duration.
    */
   static readonly TRANSITION_ANIMATION_DURATION: number = 600;
+
+  /**
+   * Share transition id.
+   */
+  static readonly SHARE_TRANSITION_ID_STUDENT_IMAGE = 'studentImage';
 
   /**
    * Share item animation delay.
@@ -212,4 +237,16 @@ export const enum PageState {
  */
 export const enum ContentType {
   JSON = 'application/json'
+}
+
+class CustomTransition {
+  x: number = 0;
+  y: number = 0;
+}
+
+class ComponentTransitionRotate {
+  x: number = 0;
+  y: number = 0;
+  z: number = 0;
+  angle: number = 360;
 }

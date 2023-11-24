@@ -43,6 +43,28 @@ export default struct ArticlePage {
   // Banner跳转组装数据
   private articleData: WanArticleBean = new WanArticleBean();
 
+  // 自定义方式：完全自定义转场过程的效果
+  @State scale1: number = 1
+  @State opacity1: number = 1
+
+  /**
+   * 自定义方式：完全自定义转场过程的效果
+   */
+  pageTransition() {
+    // 进场过程中会逐帧触发onEnter回调，入参为动效的归一化进度(0% -- 100%)
+    PageTransitionEnter({ duration: 1200, curve: Curve.Linear })
+      .onEnter((type: RouteType, progress: number) => {
+        this.scale1 = 1
+        this.opacity1 = progress
+      })
+    // 退场过程中会逐帧触发onExit回调，入参为动效的归一化进度(0% -- 100%)
+    PageTransitionExit({ duration: 1500, curve: Curve.Ease })
+      .onExit((type: RouteType, progress: number) => {
+        this.scale1 = 1 - progress
+        this.opacity1 = 1
+      })
+  }
+
   /**
    * 请求列表数据
    */
@@ -367,41 +389,45 @@ export default struct ArticlePage {
   }
 
   build() {
-    if (this.pageState === PageState.Loading) {
-      Column() {
-        LoadingProgress().width('100vp').width('100vp').color(Color.Red);
-      }
-    } else if (this.pageState === PageState.Fail) {
-      this.FailLayout(() => {
-        this.pageState = PageState.Loading;
-        this.getWanArticleList();
-      })
-    } else if (this.pageState === PageState.Success) {
-      Stack() {
+    Column(){
+      if (this.pageState === PageState.Loading) {
         Column() {
-          // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
-          // 解决方法：
-          // 在List的父容器加上代码layoutWeight(1)。
-          // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
-          // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
-          this.ArticleListLayout()
+          LoadingProgress().width('100vp').width('100vp').color(Color.Red);
         }
-        .backgroundColor($r('app.color.page_background'))
+      } else if (this.pageState === PageState.Fail) {
+        this.FailLayout(() => {
+          this.pageState = PageState.Loading;
+          this.getWanArticleList();
+        })
+      } else if (this.pageState === PageState.Success) {
+        Stack() {
+          Column() {
+            // 注意：在List组件上添加了Text组件后，List组件无法拖动到底部
+            // 解决方法：
+            // 在List的父容器加上代码layoutWeight(1)。
+            // 原理：List属于可滚动容器组件，默认高度是占满全屏幕高度，当出现其他固定高度的组件占领了屏幕的部分高度时，
+            // 需要开发人员显性的指定List组件占满剩余高度，而不是全屏幕高度。.layoutWeight(1)
+            this.ArticleListLayout()
+          }
+          .backgroundColor($r('app.color.page_background'))
 
-        if (this.isShowFloatingButton) {
-          this.ReloadPageButton()
-          this.LoadFirstPageButton()
-          this.LoadNextPageButton()
-        }
+          if (this.isShowFloatingButton) {
+            this.ReloadPageButton()
+            this.LoadFirstPageButton()
+            this.LoadNextPageButton()
+          }
 
-        if (this.isRefreshing || this.isRefreshingFromButton) {
-          LoadingProgress()
-            .width(75)
-            .height(75)
-            .color(Color.Red)
+          if (this.isRefreshing || this.isRefreshingFromButton) {
+            LoadingProgress()
+              .width(75)
+              .height(75)
+              .color(Color.Red)
+          }
         }
       }
     }
+    .scale({ x: this.scale1 })
+    .opacity(this.opacity1)
   }
 
   @Builder FailLayout(onClick: () => void) {

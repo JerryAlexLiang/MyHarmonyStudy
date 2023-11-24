@@ -137,32 +137,50 @@ export default struct StudentListItem {
                 // .backgroundColor(Color.Pink)
               .width('50vp')
               .height('50vp')
-              .border({ width: 3 })
-              .borderColor(Color.Yellow)
+                // .border({ width: 1 })
+                // .borderColor(Color.Yellow)
               .borderRadius(100)
-              .borderStyle(BorderStyle.Dotted)
+                // .borderStyle(BorderStyle.Solid)
               .onClick(this.onItemChildImageClick)
-
           }
           .width('100%')
           .padding({ left: 10, right: 10 })
           .justifyContent(FlexAlign.SpaceAround)
+          // 组内转场动画
+          .transition({ // 设置Image转场动画
+            type: TransitionType.Insert, // 设置Image的入场动画
+            scale: CommonConstants.COMPONENT_TRANSITION_SCALE_OPEN,
+            opacity: CommonConstants.COMPONENT_TRANSITION_OPACITY
+          })
+          .transition({ // 设置Image转场动画
+            type: TransitionType.Delete, // 设置Image的退场动画
+            scale: CommonConstants.COMPONENT_TRANSITION_SCALE_CLOSE,
+            opacity: CommonConstants.COMPONENT_TRANSITION_OPACITY
+          })
         }
       }
       .borderRadius(22)
       .backgroundColor($r('app.color.start_window_background'))
       .width('100%')
       .height(this.isChecked ? $r('app.float.list_item_expand_height') : $r('app.float.list_item_height'))
-      .animation({ duration: 300 })
+      // 属性动画
+      // animation属性作用域：animation自身也是组件的一个属性，其作用域为animation之前。
+      // 即产生属性动画的属性须在animation之前声明，其后声明的将不会产生属性动画
+      // 显式动画把要执行动画的属性的修改放在闭包函数中触发动画，而属性动画则无需使用闭包，把animation属性加在要做属性动画的组件的属性后即可
+      .animation({ duration: 600 })
       .onClick(() => {
         // this.isChecked = !this.isChecked;
 
-        // 添加展开动画
-        animateTo({duration:300},()=>{
+        // 组件内转场动画需要配合 animateTo 才能生效，动效时长、曲线、延时跟随 animateTo 中的配置
+        // 📢：组件内的转场动画时长，动画曲线等动画参数以 animationTo 方法设置的为基准
+        // 显示动画-添加展开动画
+        animateTo({ duration: 1000 }, () => {
           this.isChecked = !this.isChecked;
         })
 
+        // 收起非点击Item
         this.clickIndex = this.index;
+
       })
     } else {
       Column() {

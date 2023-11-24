@@ -21,6 +21,44 @@ export default struct ArticleDetailPage {
   // darkMode(mode: WebDarkMode):设置Web深色模式，默认关闭
   @State darkMode: WebDarkMode = WebDarkMode.Off
 
+  // 自定义方式：完全自定义转场过程的效果
+  @State scale2: number = 1
+  @State opacity2: number = 1
+
+  /**
+   * 自定义方式：完全自定义转场过程的效果
+   *
+   */
+  pageTransition() {
+    // // 配置了当前页面的入场动画为淡入，退场动画为缩小
+    // // 进场过程中会逐帧触发onEnter回调，入参为动效的归一化进度(0% -- 100%)
+    // PageTransitionEnter({ duration: 1200, curve: Curve.Linear })
+    //   .onEnter((type: RouteType, progress: number) => {
+    //     this.scale2 = 1
+    //     this.opacity2 = progress
+    //   });
+    // // 退场过程中会逐帧触发onExit回调，入参为动效的归一化进度(0% -- 100%)
+    // PageTransitionExit({ duration: 1500, curve: Curve.Ease })
+    //   .onExit((type: RouteType, progress: number) => {
+    //     this.scale2 = 1 - progress
+    //     this.opacity2 = 1
+    //   });
+
+    // 配置了当前页面的入场动画为放大，退场动画为缩小
+    // 进场过程中会逐帧触发onEnter回调，入参为动效的归一化进度(0% -- 100%)
+    PageTransitionEnter({ duration: 1200, curve: Curve.Linear })
+      .onEnter((type: RouteType, progress: number) => {
+        this.scale2 = progress
+        this.opacity2 = progress
+      });
+    // 退场过程中会逐帧触发onExit回调，入参为动效的归一化进度(0% -- 100%)
+    PageTransitionExit({ duration: 1500, curve: Curve.Ease })
+      .onExit((type: RouteType, progress: number) => {
+        this.scale2 = 1 - progress
+        this.opacity2 = 1 - progress
+      });
+  }
+
   build() {
     Stack() {
       Navigation() {
@@ -115,5 +153,7 @@ export default struct ArticleDetailPage {
           .value(this.loadingProgress)
       }
     }
+    .scale({ x: this.scale2, y: this.scale2 })
+    .opacity(this.opacity2)
   }
 }
